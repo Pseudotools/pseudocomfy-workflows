@@ -1,0 +1,261 @@
+{
+  "id": "810d0e05-28c5-48b0-9936-7013239c1215",
+  "type": "comfy",
+  "name": "mxc TXT+IMG v1.3",
+  "description": "workflow description",
+  "pseudorandom_workflow_scheme_version": 0.0,
+  "variables": [
+      {
+        "name": "Checkpoint path",
+        "key": "__CKPT__",
+        "type": "string",
+        "default": "aiAngelMix_v30.safetensors",
+        "description": "human-readable description"
+      },
+      {
+        "name": "Controlnet Strength",
+        "key": "__CONTROLNET_STRENGTH__",
+        "type": "float",
+        "default": 0.95,
+        "range": [0.00,1.00],
+        "description": "human-readable description"
+      },
+      {
+        "name": "Steps",
+        "key": "__STEPS__",
+        "type": "int",
+        "default": 10,
+        "range": [0,50],
+        "description": "human-readable description"
+      }
+  ],
+  "endpoint_requirements" : {
+    "checkpoints": [
+      "aiAngelMix_v30.safetensors"
+    ],
+    "custom_nodes": [
+        "Pseudorandom",
+        "ComfyUI_IPAdapter_plus"
+    ],
+    "controlnet":[
+        "diffusion_pytorch_model.safetensors"
+    ]
+  },
+  "prompt_requirements": {
+		"image": true,
+		"text": true
+	},
+  "workflow": {
+    "1": {
+      "inputs": {
+        "ckpt_name": "__CKPT__"
+      },
+      "class_type": "CheckpointLoaderSimple",
+      "_meta": {
+        "title": "Load Checkpoint"
+      }
+    },
+    "3": {
+      "inputs": {
+        "scale_img_by": 1,
+        "json_path": [
+          "22",
+          0
+        ]
+      },
+      "class_type": "ProcessJSON",
+      "_meta": {
+        "title": "Process JSON"
+      }
+    },
+    "7": {
+      "inputs": {
+        "seed": "__PSEUDORANDOM_SEED__",
+        "steps": "__STEPS__",
+        "cfg": 3.0,
+        "sampler_name": "euler",
+        "scheduler": "normal",
+        "denoise": 1,
+        "model": [
+          "21",
+          0
+        ],
+        "positive": [
+          "15",
+          0
+        ],
+        "negative": [
+          "15",
+          1
+        ],
+        "latent_image": [
+          "8",
+          0
+        ]
+      },
+      "class_type": "KSampler",
+      "_meta": {
+        "title": "KSampler"
+      }
+    },
+    "8": {
+      "inputs": {
+        "width": [
+          "3",
+          6
+        ],
+        "height": [
+          "3",
+          7
+        ],
+        "batch_size": 1
+      },
+      "class_type": "EmptyLatentImage",
+      "_meta": {
+        "title": "Empty Latent Image"
+      }
+    },
+    "10": {
+      "inputs": {
+        "samples": [
+          "7",
+          0
+        ],
+        "vae": [
+          "1",
+          2
+        ]
+      },
+      "class_type": "VAEDecode",
+      "_meta": {
+        "title": "VAE Decode"
+      }
+    },
+    "12": {
+      "inputs": {
+        "filename_prefix": "ComfyUI",
+        "images": [
+          "10",
+          0
+        ]
+      },
+      "class_type": "SaveImage",
+      "_meta": {
+        "title": "Save Image"
+      }
+    },
+    "15": {
+      "inputs": {
+        "strength": "__CONTROLNET_STRENGTH__",
+        "start_percent": 0,
+        "end_percent": 1,
+        "positive": [
+          "21",
+          1
+        ],
+        "negative": [
+          "21",
+          2
+        ],
+        "control_net": [
+          "16",
+          0
+        ],
+        "image": [
+          "3",
+          8
+        ]
+      },
+      "class_type": "ControlNetApplyAdvanced",
+      "_meta": {
+        "title": "Apply ControlNet (Advanced)"
+      }
+    },
+    "16": {
+      "inputs": {
+        "control_net_name": "diffusion_pytorch_model.safetensors"
+      },
+      "class_type": "ControlNetLoader",
+      "_meta": {
+        "title": "Load ControlNet Model"
+      }
+    },
+    "21": {
+      "inputs": {
+        "pmt_scene": [
+          "3",
+          3
+        ],
+        "pmt_style": [
+          "3",
+          4
+        ],
+        "pmt_negative": [
+          "3",
+          5
+        ],
+        "width": [
+          "3",
+          6
+        ],
+        "height": [
+          "3",
+          7
+        ],
+        "base_cond_strength": 0.3,
+        "object_cond_strength": 1,
+        "ipadapter_weight": 0.8,
+        "clip": [
+          "1",
+          1
+        ],
+        "object_txts": [
+          "3",
+          0
+        ],
+        "masks": [
+          "3",
+          2
+        ],
+        "object_imgs": [
+          "3",
+          1
+        ],
+        "model": [
+          "24",
+          0
+        ],
+        "ipadapter": [
+          "24",
+          1
+        ]
+      },
+      "class_type": "MixedBuiltinCombinerIPAdaper",
+      "_meta": {
+        "title": "Mixed Builtin Combiner (with IPAdaper)"
+      }
+    },
+    "22": {
+      "inputs": {
+        "string_path": "__PSEUDORANDOM_TEMP_PATH__"
+      },
+      "class_type": "LoadJSONFromFolder",
+      "_meta": {
+        "title": "Load JSON (From Folder)"
+      }
+    },
+    "24": {
+      "inputs": {
+        "preset": "PLUS (high strength)",
+        "model": [
+          "1",
+          0
+        ]
+      },
+      "class_type": "IPAdapterUnifiedLoader",
+      "_meta": {
+        "title": "IPAdapter Unified Loader"
+      }
+    }
+  }
+}
