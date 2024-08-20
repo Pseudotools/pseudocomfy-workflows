@@ -24,7 +24,7 @@
             "name": "Controlnet model path",
             "key": "__CONTROLNET_MODEL_PATH__",
             "type": "string",
-            "default": "diffusion_pytorch_model.safetensors",
+            "default": "diff_control_sd15_depth_fp16.safetensors",
             "description": "human-readable description"
         },
         {
@@ -44,7 +44,7 @@
             "Pseudorandom"
         ],
         "controlnet": [
-            "diffusion_pytorch_model.safetensors"
+            "diff_control_sd15_depth_fp16.safetensors"
         ],
         "ipadapter": []
     },
