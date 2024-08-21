@@ -41,7 +41,7 @@
             "aiAngelMix_v30.safetensors"
         ],
         "custom_nodes": [
-            "sm24-pseudocomfy"
+            "Pseudocomfy"
         ],
         "controlnet": [
             "diff_control_sd15_depth_fp16.safetensors"
