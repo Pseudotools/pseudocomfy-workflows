@@ -192,7 +192,7 @@
         },
         "33": {
           "inputs": {
-            "json_path": [
+            "json_data": [
               "36",
               0
             ],
