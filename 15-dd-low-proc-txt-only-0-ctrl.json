@@ -24,7 +24,7 @@
             "name": "Controlnet model path",
             "key": "__CONTROLNET_MODEL_PATH__",
             "type": "string",
-            "default": "diff_control_sd15_depth_fp16.safetensors",
+            "default": "diffusion_pytorch_model.safetensors",
             "description": "human-readable description"
         },
         {
@@ -44,7 +44,7 @@
             "Pseudocomfy"
         ],
         "controlnet": [
-            "diff_control_sd15_depth_fp16.safetensors"
+            "diffusion_pytorch_model.safetensors"
         ],
         "ipadapter": []
     },
